@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+const scanActiveBtn = document.getElementById("scanActiveBtn");
+
+scanActiveBtn.addEventListener("click", function () {
     var video = document.createElement("video");
     var canvasElement = document.getElementById("canvas");
     var canvas = canvasElement.getContext("2d");
@@ -6,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var outputContainer = document.getElementById("output");
     var outputMessage = document.getElementById("outputMessage");
     var outputData = document.getElementById("outputData");
+    let outputDataLength = document.getElementById("outputDataLength");
 
     function drawLine(begin, end, color) {
         canvas.beginPath();
@@ -55,9 +58,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 outputData.parentElement.hidden = false;
 
                 // QR코드 메시지 출력
-                outputData.innerHTML = code.data.replace('ethereum:','');
-                console.log(outputData.innerText);
+                const walletAddress = code.data.replace('ethereum:','');    // code text를 형식에 맞게 치환
+                outputData.innerText = walletAddress;
+                outputDataLength.innerText = walletAddress.length;
 
+                // 스캔 기능 비활성화
+                loadingMessage.hidden = true;
+                canvasElement.hidden = true;
+                outputContainer.hidden = false;
 
                 // return을 써서 함수를 빠져나가면 QR코드 프로그램이 종료된다.
                 return;
